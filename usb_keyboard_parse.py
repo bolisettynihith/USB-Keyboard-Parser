@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import subprocess
 import sys
@@ -65,13 +65,17 @@ def retrieve_keystrokes(usb_keyboard_data):
             l[pos] += usb_codes[code][1]
         else:
             l[pos] += usb_codes[code][0]
-
-    print("Retrieved Keyboard Hid data is:\n" + '\n'.join(l)) # print the keystrokes
+    l="\n".join(l)
+    return(l)
 
 if __name__ == '__main__':
     if(len(sys.argv)<2):
         print('''[+] Error reading file\nUsage: python usb_parse.py <Path to the pcap/pcapng file>''')
+        exit(-1)
     else:
         capdata = read_pcap()
         if(check_keyboard_data(capdata)):
-            retrieve_keystrokes(capdata)
+            data = retrieve_keystrokes(capdata)
+        print("Retrieved Keyboard Hid data is:") # print the keystrokes
+        # print(data)
+        sys.stdout.write(data + "\n")
